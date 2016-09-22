@@ -1,0 +1,22 @@
+{
+  "name": "cristifalcas-curator",
+  "version": "3.0.0",
+  "author": "Cristian Falcas <cristifalcas@gmail.com>",
+  "license": "Apache-2.0",
+  "summary": "Installs elasticsearch curator",
+  "source": "https://github.com/cristifalcas/puppet-curator",
+  "project_page": "https://github.com/cristifalcas/puppet-curator",
+  "issues_url": "https://github.com/cristifalcas/puppet-curator/issues",
+  "tags": ["curator", "elasticsearch"],
+  "operatingsystem_support": [
+    { "operatingsystem": "RedHat", "operatingsystemrelease": [ "6", "7" ] },
+    { "operatingsystem": "CentOS", "operatingsystemrelease": [ "6", "7" ] },
+    { "operatingsystem": "Ubuntu", "operatingsystemrelease": [ "12.04", "14.04" ] },
+    { "operatingsystem": "Debian", "operatingsystemrelease": [ "8" ] }
+  ],
+  "dependencies": [
+    { "name": "puppetlabs/apt", "version_requirement": ">=2.2.0" },
+    { "name": "puppetlabs/stdlib", "version_requirement": ">=4.2.0 <5.0.0" },
+    { "name": "puppetlabs/concat", "version_requirement": ">=2.0.0 <3.0.0" }
+  ]
+}

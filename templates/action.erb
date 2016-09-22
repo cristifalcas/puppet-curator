@@ -1,0 +1,68 @@
+  <%= @order -%>:
+    action: <%= @action %>
+    description: <%= @description %>
+    options:
+      continue_if_exception: <%= @continue_if_exception %>
+      disable_action: <%= @disable_action %>
+      ignore_empty_list: <%= @ignore_empty_list %>
+<% if @ignore_unavailable then %>      ignore_unavailable: <%= @ignore_unavailable %>
+<% end -%>
+<% if @allocation_type then %>      allocation_type: <%= @allocation_type %>
+<% end -%>
+<% if @count then %>      count: <%= @count %>
+<% end -%>
+<% if @delay then %>      delay: <%= @delay %>
+<% end -%>
+<% if @delete_aliases then %>      delete_aliases: <%= @delete_aliases %>
+<% end -%>
+<% if @include_aliases then %>      include_aliases: <%= @include_aliases %>
+<% end -%>
+<% if @include_global_state then %>      include_global_state: <%= @include_global_state %>
+<% end -%>
+<% if @indices then %>      indices: <%= @indices %>
+<% end -%>
+<% if @key then %>      key: <%= @key %>
+<% end -%>
+<% if @max_num_segments then %>      max_num_segments: <%= @max_num_segments %>
+<% end -%>
+<% if @option_name then %>      option_name: <%= @option_name %>
+<% end -%>
+<% if @partial then %>      partial: <%= @partial %>
+<% end -%>
+<% if @rename_pattern then %>      rename_pattern: <%= @rename_pattern %>
+<% end -%>
+<% if @rename_replacement then %>      rename_replacement: <%= @rename_replacement %>
+<% end -%>
+<% if @repository then %>      repository: <%= @repository %>
+<% end -%>
+<% if @retry_count then %>      retry_count: <%= @retry_count %>
+<% end -%>
+<% if @retry_interval then %>      retry_interval: <%= @retry_interval %>
+<% end -%>
+<% if @skip_repo_fs_check then %>      skip_repo_fs_check: <%= @skip_repo_fs_check %>
+<% end -%>
+<% if @timeout_override then %>      timeout_override: <%= @timeout_override %>
+<% end -%>
+<% if @value then %>      value: <%= @value %>
+<% end -%>
+<% if @wait_for_completion then %>      wait_for_completion: <%= @wait_for_completion %>
+<% end -%>
+<% if @for_alias_only_TBD then -%>
+    add/remove:
+      filters:
+      - filtertype: *first*
+        filter_element1: value1
+        ...
+        filter_elementN: valueN
+      - filtertype: *second*
+        filter_element1: value1
+        ...
+        filter_elementN: valueN
+<% end -%>
+    filters:
+<% @filters.each do |filter| -%>
+    - filtertype: <%= filter['filtertype'] %>
+<% filter.tap{|x| x.delete('filtertype')}.sort.each do |key, value| -%>
+      <%= key -%>: <%= value %>
+<% end -%>
+<% end -%>
