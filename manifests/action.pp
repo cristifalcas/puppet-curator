@@ -126,7 +126,7 @@ define curator::action (
     fail('$key can be set only for action = allocation')
   }
 
-  if $repository and member(['delete_snapshots', 'snapshot',], $action) {
+  if $repository and !member(['delete_snapshots', 'snapshot',], $action) {
     fail('$repository can be set only for action = delete_snapshots or snapshot')
   }
 
