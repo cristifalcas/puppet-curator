@@ -126,7 +126,7 @@ define curator::action (
     fail('$key can be set only for action = allocation')
   }
 
-  if $repository and !member(['delete_snapshots', 'snapshot',], $repository) {
+  if $repository and !member(['delete_snapshots', 'snapshot',], $action) {
     fail('$repository can be set only for action = delete_snapshots or snapshot')
   }
 
@@ -134,7 +134,7 @@ define curator::action (
     fail('$retry_count can be set only for action = delete_snapshots')
   }
 
-  if $wait_for_completion and !member(['allocation', 'replicas', 'restore', 'snapshot'], $wait_for_completion) {
+  if $wait_for_completion and !member(['allocation', 'replicas', 'restore', 'snapshot'], $action) {
     fail('$wait_for_completion can be set only for action = allocation or replicas or restore or snapshot')
   }
 
