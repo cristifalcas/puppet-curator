@@ -24,7 +24,7 @@ client:
   master_only: <%= scope['curator::master_only'] %>
 
 logging:
-  loglevel: <%= scope['curator::loglevel'] %>
+  loglevel: <%= scope['curator::log_level'] %>
   logfile: <%= scope['curator::logfile'] %>
   logformat: <%= scope['curator::logformat'] %>
   blacklist: [<%= Array(scope['curator::blacklist']).join(", ") %>]
