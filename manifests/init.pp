@@ -98,7 +98,7 @@
 #            and will only continue running on the node that is the elected master.
 #   Default: False
 #
-# [*loglevel*]
+# [*log_level*]
 #   String.  Set the minimum acceptable log severity to display. This should be CRITICAL, ERROR, WARNING, INFO, DEBUG, or left empty.
 #   Default: INFO
 #
