@@ -1,6 +1,6 @@
 # == Define: curator::action
 #
-# Installs a cronjob for a specific action
+# Defines a specific action
 #
 # === Parameters
 #
