@@ -7,8 +7,3 @@ RSpec.configure do |config|
     config.filter_run focus: true
     config.run_all_when_everything_filtered = true
 end
-
-# put local configuration and setup into spec_helper_local
-begin
-  require 'spec_helper_local'
-end

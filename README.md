@@ -148,7 +148,7 @@ Default: false
 String.  Path to configuration file. You must ensure that the directory path exists.
 Default: '/root/.curator/curator.yml'
 
-#####`actions_file`
+#####`action_file`
 String.  Path to actions file. You must ensure that the directory path exists.
 Default: '/root/.curator/actions.yml'
 

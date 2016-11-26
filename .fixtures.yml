@@ -6,5 +6,7 @@ fixtures:
     stdlib:
       repo: "puppetlabs/stdlib"
       ref: "4.2.0"
+    concat:
+      repo: "puppetlabs/concat"
   symlinks:
     curator: "#{source_dir}"
