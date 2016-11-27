@@ -3,8 +3,6 @@ require 'puppet-lint/tasks/puppet-lint'
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'metadata-json-lint/rake_task'
-require 'parallel_tests'
-require 'parallel_tests/cli'
 
 exclude_paths = [
   "bundle/**/*",
