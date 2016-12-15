@@ -160,29 +160,6 @@ class curator (
     }
   }
 
-  case $manage_repo {
-    true: {
-      case $::osfamily {
-        'Debian': {
-          $_package_name = 'python-elasticsearch-curator'
-          $_provider     = 'apt'
-        }
-        'RedHat': {
-          $_package_name = 'python-elasticsearch-curator'
-          $_provider     = 'yum'
-        }
-        default: {
-          $_package_name = 'elasticsearch-curator'
-          $_provider     = 'pip'
-        }
-      }
-    }
-    default: {
-      $_package_name = $package_name
-      $_provider     = $package_provider
-    }
-  }
-
   validate_bool($manage_repo)
 
   if ($manage_repo == true) {
@@ -190,14 +167,13 @@ class curator (
 
     # Set up repositories
     class { '::curator::repo': } ->
-    package { $_package_name:
-      ensure   => $ensure,
-      provider => $_provider,
+    package { $package_name:
+      ensure => $ensure,
     }
   } else {
-    package { $_package_name:
+    package { $package_name:
       ensure   => $ensure,
-      provider => $_provider,
+      provider => $package_provider,
     }
   }
 
@@ -207,7 +183,7 @@ class curator (
     group   => 'root',
     mode    => '0644',
     content => template("${module_name}/config.erb"),
-    require => Package[$_package_name],
+    require => Package[$package_name],
   }
 
   concat { $actions_file:
