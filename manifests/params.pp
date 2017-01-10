@@ -5,7 +5,7 @@
 class curator::params {
   $ensure           = 'latest'
   $package_name     = 'elasticsearch-curator'
-  $package_provider = 'pip'
+  $package_provider = undef
   $manage_repo      = false
   $repo_version     = false
 

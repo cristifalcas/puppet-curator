@@ -61,8 +61,10 @@
 #   Default: empty string
 #
 # [*client_key*]
-#   String.  Allows the use of a specified SSL client key file to authenticate to Elasticsearch. If using client_cert and the file specified
-#            does not also contain the key, use client_key to specify the file containing the SSL key. The key file must be an unencrypted key
+#   String.  Allows the use of a specified SSL client key file to authenticate to Elasticsearch. If using client_cert and the file
+#   specified
+#            does not also contain the key, use client_key to specify the file containing the SSL key. The key file must be an
+#            unencrypted key
 #            in PEM format.
 #   Default: empty string
 #
@@ -79,7 +81,8 @@
 #   Default: empty string
 #
 # [*ssl_no_validate*]
-#   Boolean. If access to your Elasticsearch instance is protected by SSL encryption, you may set ssl_no_validate to True to disable SSL
+#   Boolean. If access to your Elasticsearch instance is protected by SSL encryption, you may set ssl_no_validate to True to disable
+#   SSL
 #            certificate verification.
 #   Default: False
 #
@@ -99,7 +102,8 @@
 #   Default: False
 #
 # [*log_level*]
-#   String.  Set the minimum acceptable log severity to display. This should be CRITICAL, ERROR, WARNING, INFO, DEBUG, or left empty.
+#   String.  Set the minimum acceptable log severity to display. This should be CRITICAL, ERROR, WARNING, INFO, DEBUG, or left
+#   empty.
 #   Default: INFO
 #
 # [*logfile*]
@@ -153,8 +157,7 @@ class curator (
   $logformat        = $::curator::params::logformat,
   $blacklist        = $::curator::params::blacklist,
 ) inherits curator::params {
-
-  if ( $ensure != 'latest' or $ensure != 'absent' ) {
+  if ($ensure != 'latest' or $ensure != 'absent') {
     if versioncmp($ensure, '4.0.0') < 0 {
       fail('This version of the module only supports version 4.0.0 or later of curator')
     }
@@ -162,39 +165,13 @@ class curator (
 
   validate_bool($manage_repo)
 
-  if ($manage_repo == true) {
+  if $repo_version {
     validate_string($repo_version)
-
-    # Set up repositories
-    class { '::curator::repo': } ->
-    package { $package_name:
-      ensure => $ensure,
-    }
-  } else {
-    package { $package_name:
-      ensure   => $ensure,
-      provider => $package_provider,
-    }
   }
 
-  file { $config_file:
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template("${module_name}/config.erb"),
-    require => Package[$package_name],
-  }
+  contain '::curator::install'
+  contain '::curator::config'
 
-  concat { $actions_file:
-    owner => 'root',
-    group => 'root',
-    mode  => '0644'
-  }
-
-  concat::fragment { 'header':
-    target  => $actions_file,
-    content => template("${module_name}/actions_header.erb"),
-    order   => '00',
-  }
+  Class['curator::install'] ->
+  Class['curator::config']
 }
