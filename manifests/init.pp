@@ -172,6 +172,10 @@ class curator (
   contain '::curator::install'
   contain '::curator::config'
 
-  Class['curator::install'] ->
-  Class['curator::config']
+  Class['curator::install'] -> Class['curator::config']
+
+  $actions = hiera_hash('curator::actions', undef)
+  if $actions {
+    create_resources('curator::action', $actions)
+  }
 }
