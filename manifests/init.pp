@@ -23,6 +23,10 @@
 #            select here which version you want.
 #   Default: false
 #
+# [*install_only*]
+#   String.  If you want the module only to install the program and not to configure it
+#   Default: false
+#
 # [*config_file*]
 #   String.  Path to configuration file. You must ensure that the directory path exists.
 #   Default: '/root/.curator/curator.yml'
@@ -135,6 +139,8 @@ class curator (
   $package_provider = $::curator::params::package_provider,
   $manage_repo      = $::curator::params::manage_repo,
   $repo_version     = $::curator::params::repo_version,
+
+  $install_only     = $::curator::params::install_only,
   # curator params
   $config_file      = $::curator::params::config_file,
   $actions_file     = $::curator::params::actions_file,
@@ -170,12 +176,11 @@ class curator (
   }
 
   contain '::curator::install'
-  contain '::curator::config'
 
-  Class['curator::install'] -> Class['curator::config']
+  if !$install_only {
+    contain '::curator::config'
 
-  $actions = hiera_hash('curator::actions', undef)
-  if $actions {
-    create_resources('curator::action', $actions)
+    Class['curator::install'] ->
+    Class['curator::config']
   }
 }

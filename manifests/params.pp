@@ -8,6 +8,7 @@ class curator::params {
   $package_provider = undef
   $manage_repo      = false
   $repo_version     = false
+  $install_only     = false
 
   $config_file     = '/root/.curator/curator.yml'
   $actions_file    = '/root/.curator/actions.yml'
