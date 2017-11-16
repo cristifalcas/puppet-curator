@@ -14,7 +14,7 @@ class curator::config {
     mode  => '0644'
   }
 
-  concat::fragment { 'header':
+  concat::fragment { 'curator.config.header':
     target  => $curator::actions_file,
     content => template("${module_name}/actions_header.erb"),
     order   => '00',
