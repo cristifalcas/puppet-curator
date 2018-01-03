@@ -44,7 +44,7 @@ class curator::repo {
           src => false,
           deb => true
         }
-      }
+      } -> Class['apt::update'] -> Package[$curator::package_name]
     }
     'RedHat': {
       # Support for facter 3
