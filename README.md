@@ -17,7 +17,7 @@
 ## Overview
 
 A puppet module for installing and configuring [elastic-curator](https://github.com/elastic/curator).
-This module was forked from jlambert121-curator and updated dor curator4
+This module was forked from jlambert121-curator and updated for curator4
 
 ## Module Description
 
@@ -27,7 +27,11 @@ NOTE: If you are using curator < 4.0.0 use a previous version of this module.
 
 The original module allowed you to create various cron jobs for curator.
 
-The new module will only create the config file and one action file. Also, now it it your job to create the cron job:
+The new module will only create the config file, one action file and ensure the last folder of the path. 
+If there is more than one (folder-)level missing you will have to create that folders externally before this module runs. 
+e.g. "/etc/curator/my_settings/" you have to ensure that "/etc/curator" is present.
+
+Also, now it is your job to create the cron job:
 
 ```puppet
   cron { "curator_run":
