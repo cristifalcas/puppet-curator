@@ -32,8 +32,12 @@ class curator::repo {
         class { '::apt': }
       }
 
+      if versioncmp($::os['release']['major'], '9') == 0 {
+        $repo_path = '9'
+      }
+
       apt::source { 'curator':
-        location    => "http://packages.elastic.co/curator/${curator::repo_version}/debian",
+        location    => "http://packages.elastic.co/curator/${curator::repo_version}/debian${repo_path}",
         release     => 'stable',
         repos       => 'main',
         key         => {
