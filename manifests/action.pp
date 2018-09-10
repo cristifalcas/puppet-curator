@@ -6,7 +6,7 @@
 #
 # [*name*]
 #   String.  Valid values: Alias, Allocation, Close, Create Index, Delete Indices, Delete Snapshots,
-#            Open, forceMerge, Replicas, Restore, Snapshot 
+#            Open, forceMerge, Replicas, Restore, Shrink, Snapshot
 #   Default:
 #
 # [*description*]
@@ -44,6 +44,50 @@
 #            This results in an error condition.
 #   Default: False
 #
+# [*shrink_node*]
+#   String.  Read more about these setting at https://www.elastic.co/guide/en/elasticsearch/client/curator/current/option_shrink_node.html
+#   Default: undef
+#
+# [*copy_aliases*]
+#   Boolean. If copy_aliases is set to True, Curator will copy the source index to the target index after the successful action.
+#   Default: undef
+#
+# [*delete_after*]
+#   Boolean. Curator will delete the source index after the successful action.
+#   Default: undef
+#
+# [*node_filters*]
+#   Array. Read more about there setting at https://www.elastic.co/guide/en/elasticsearch/client/curator/current/option_node_filters.html
+#   Default: undef
+#
+# [*number_of_shards*]
+#   Number.  The value for this setting determines determines the number of primary shards in the target index.
+#   Default: undef
+#
+# [*number_of_replicas*]
+#   Number.  The value for this setting determines determines the number of replica shards per primary shard in the target index.
+#   Default: undef
+#
+# [*post_allocation*]
+#   Array.  These values will be use to apply shard routing allocation to the target index after shrinking.
+#   Default: undef
+#
+# [*shrink_prefix*]
+#   String.  This value will be prepended to target index names.
+#   Default: undef
+#
+# [*shrink_suffix*]
+#   String.  This value will be appended to target index names.
+#   Default: undef
+#
+# [*wait_for_active_shards*]
+#   String.  This value determines the number of shard copies that must be active before the client returns.
+#   Default: undef
+#
+# [*wait_for_rebalance*]
+#   Boolean.  Curator will action for index being shrunk and not wait for the cluster to fully rebalance all shards.
+#   Default: undef
+#
 #  ___TBC___
 #
 # [*filters*]
@@ -54,8 +98,10 @@ define curator::action (
   $description           = $name,
   $allocation_type       = undef,
   $continue_if_exception = 'False',
+  $copy_aliases          = undef,
   $count                 = undef,
   $delay                 = undef,
+  $delete_after          = undef,
   $delete_aliases        = undef,
   $disable_action        = 'False',
   # $extra_settings = undef, #We don't support $extra_settings yet
@@ -66,17 +112,26 @@ define curator::action (
   $indices               = undef,
   $key                   = undef,
   $max_num_segments      = undef,
+  $number_of_replicas    = undef,
+  $number_of_shards      = undef,
+  $node_filters          = undef,
   $option_name           = undef,
   $partial               = undef,
+  $post_allocation       = undef,
   $rename_pattern        = undef,
   $rename_replacement    = undef,
   $repository            = undef,
   $retry_count           = undef,
   $retry_interval        = undef,
+  $shrink_node           = undef,
+  $shrink_prefix         = undef,
+  $shrink_suffix         = undef,
   $skip_repo_fs_check    = undef,
   $timeout_override      = undef,
   $value                 = undef,
+  $wait_for_active_shards = undef,
   $wait_for_completion   = undef,
+  $wait_for_rebalance    = undef,
   $filters               = [],
   $order                 = 1,
 ){
@@ -93,13 +148,15 @@ define curator::action (
     'forcemerge',
     'replicas',
     'restore',
+    'shrink',
     'snapshot',
     ], $action) {
     fail("Incorrect action name: ${$action}, Check https://www.elastic.co/guide/en/elasticsearch/client/curator/current/actions.html")
   }
 
-  if ($allocation_type and $action != 'alias') or ( $allocation_type and !validate_re($allocation_type, '^(require|include|exclude)$')) {
-    fail('$allocation_type can be set only for action = alias')
+  if ($allocation_type and !member(['alias', 'shrink',])) or
+  ( $allocation_type and !validate_re($allocation_type, '^(require|include|exclude)$')) {
+    fail('$allocation_type can be set only for action = alias or shrink')
   }
 
   if $count and $action != 'replicas' {
@@ -122,8 +179,8 @@ define curator::action (
     fail('$include_global_state can be set only for action = snapshot')
   }
 
-  if ($key or $value) and $action != 'allocation' {
-    fail('$key can be set only for action = allocation')
+  if ($key or $value) and !member(['allocation', 'shrink',], $action) {
+    fail('$key can be set only for action = allocation or shrink')
   }
 
   if $repository and !member(['delete_snapshots', 'snapshot',], $action) {
@@ -136,6 +193,12 @@ define curator::action (
 
   if $wait_for_completion and !member(['allocation', 'replicas', 'restore', 'snapshot'], $action) {
     fail('$wait_for_completion can be set only for action = allocation or replicas or restore or snapshot')
+  }
+
+  if ($copy_aliases or $delete_after or $shrink_node or $node_filters or
+  $number_of_shards or $number_of_replicas or $post_allocation or $shrink_prefix or
+  $shrink_suffix or $wait_for_active_shards or $wait_for_rebalance) and $action != 'shrink' {
+    fail('This action can be set only for action = shrink')
   }
 
   concat::fragment { "${name}_action":
