@@ -191,8 +191,8 @@ define curator::action (
     fail('$retry_count can be set only for action = delete_snapshots')
   }
 
-  if $wait_for_completion and !member(['allocation', 'replicas', 'restore', 'snapshot'], $action) {
-    fail('$wait_for_completion can be set only for action = allocation or replicas or restore or snapshot')
+  if $wait_for_completion and !member(['allocation', 'replicas', 'restore', 'snapshot', 'shrink'], $action) {
+    fail('$wait_for_completion can be set only for action = allocation or replicas or restore or snapshot or shrink')
   }
 
   if ($copy_aliases or $delete_after or $shrink_node or $node_filters or
