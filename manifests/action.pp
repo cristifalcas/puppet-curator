@@ -155,7 +155,7 @@ define curator::action (
   }
 
   if ($allocation_type and !member(['allocation', 'shrink',], $action)) or
-  ( $allocation_type and !validate_re($allocation_type, '^(require|include|exclude)$')) {
+  ( $allocation_type and !member(['require','include','exclude',], $allocation_type)) {
     fail("$allocation_type can be set only for action = allocation or shrink, you have action: ${action} and ${allocation_type}")
   }
 
