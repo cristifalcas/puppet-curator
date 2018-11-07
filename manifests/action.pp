@@ -156,7 +156,7 @@ define curator::action (
 
   if ($allocation_type and !member(['allocation', 'shrink',], $action)) or
   ( $allocation_type and !validate_re($allocation_type, '^(require|include|exclude)$')) {
-    fail('$allocation_type can be set only for action = allocation or shrink')
+    fail("$allocation_type can be set only for action = allocation or shrink, you have action: ${action} and ${allocation_type}")
   }
 
   if $count and $action != 'replicas' {
