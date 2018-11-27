@@ -154,9 +154,11 @@ define curator::action (
     fail("Incorrect action name: ${$action}, Check https://www.elastic.co/guide/en/elasticsearch/client/curator/current/actions.html")
   }
 
-  if ($allocation_type and !member(['allocation', 'shrink',], $action)) or
-  ( $allocation_type and !member(['require','include','exclude',], $allocation_type)) {
-    fail("$allocation_type can be set only for action = allocation or shrink, you have action: ${action} and ${allocation_type}")
+  if ($allocation_type and !member(['allocation', 'shrink',], $action)) {
+    fail("$allocation_type can only be set for action = allocation or shrink")
+  }
+  if ( $allocation_type and !member(['require', 'include', 'exclude',], $allocation_type)) {
+    fail("$allocation_type must be require, include or exclude")
   }
 
   if $count and $action != 'replicas' {
