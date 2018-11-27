@@ -87,8 +87,7 @@
 <% end -%><% if @node_filters then -%>
       node_filters: <% @node_filters.each do |key, value| %>
         <%= key -%>: <%= value %>
-<% end -%>
-<% end -%>
+<% end -%><% end -%>
     filters:
 <% @filters.each do |filter| -%>
     - filtertype: <%= filter['filtertype'] %>
