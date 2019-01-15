@@ -38,11 +38,11 @@
 <% if @partial then %>      partial: <%= @partial %>
 <% end -%>
 <% if @post_allocation then %>      post_allocation:
-<% if @allocation_type then %>         allocation: <%= @allocation_type %>
+<% if @allocation_type then %>        allocation_type: <%= @allocation_type %>
 <% end -%>
-<% if @key then %>         key: <%= @key %>
+<% if @key then %>        key: <%= @key %>
 <% end -%>
-<% if @value then %>         value: <%= @value %>
+<% if @value then %>        value: <%= @value %>
 <% end -%>
 <% end -%>
 <% if @rename_pattern then %>      rename_pattern: <%= @rename_pattern %>
@@ -87,8 +87,7 @@
 <% end -%><% if @node_filters then -%>
       node_filters: <% @node_filters.each do |key, value| %>
         <%= key -%>: <%= value %>
-<% end -%>
-<% end -%>
+<% end -%><% end -%>
     filters:
 <% @filters.each do |filter| -%>
     - filtertype: <%= filter['filtertype'] %>

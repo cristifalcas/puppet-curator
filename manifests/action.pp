@@ -154,9 +154,11 @@ define curator::action (
     fail("Incorrect action name: ${$action}, Check https://www.elastic.co/guide/en/elasticsearch/client/curator/current/actions.html")
   }
 
-  if ($allocation_type and !member(['allocation', 'shrink',])) or
-  ( $allocation_type and !validate_re($allocation_type, '^(require|include|exclude)$')) {
-    fail('$allocation_type can be set only for action = allocation or shrink')
+  if ($allocation_type and !member(['allocation', 'shrink',], $action)) {
+    fail("$allocation_type can only be set for action = allocation or shrink")
+  }
+  if ( $allocation_type and !member(['require', 'include', 'exclude',], $allocation_type)) {
+    fail("$allocation_type must be require, include or exclude")
   }
 
   if $count and $action != 'replicas' {
@@ -191,8 +193,8 @@ define curator::action (
     fail('$retry_count can be set only for action = delete_snapshots')
   }
 
-  if $wait_for_completion and !member(['allocation', 'replicas', 'restore', 'snapshot'], $action) {
-    fail('$wait_for_completion can be set only for action = allocation or replicas or restore or snapshot')
+  if $wait_for_completion and !member(['allocation', 'replicas', 'restore', 'snapshot', 'shrink'], $action) {
+    fail('$wait_for_completion can be set only for action = allocation or replicas or restore or snapshot or shrink')
   }
 
   if ($copy_aliases or $delete_after or $shrink_node or $node_filters or
