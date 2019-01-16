@@ -1,3 +1,6 @@
+**This project is now deprecated in favor of https://github.com/ccin2p3/puppet-curator**
+
+
 [![Puppet Forge](http://img.shields.io/puppetforge/v/jlambert121/curator.svg)](https://forge.puppetlabs.com/jlambert121/curator)
 [![Build Status](https://travis-ci.org/jlambert121/jlambert121-curator.png?branch=master)](https://travis-ci.org/jlambert121/jlambert121-curator)
 
